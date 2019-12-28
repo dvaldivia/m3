@@ -91,13 +91,13 @@ func (s *server) ListBuckets(ctx context.Context, in *pb.ListBucketsRequest) (*p
 	// TODO: Update List bucket to use context so the tenant is read automatically
 	// List buckets in the tenant's MinIO
 	var bucketInfos []cluster.TenantBucketInfo
-	bucketInfos, err = cluster.ListBuckets(appCtx.Tenant.ShortName)
+	bucketInfos, err = cluster.ListBuckets(appCtx.Tenant().ShortName)
 	if err != nil {
 		log.Println(err)
 		return nil, status.New(codes.Internal, "Failed to list buckets").Err()
 	}
 
-	dataUsageInfo, err := cluster.GetBucketUsageMetrics(appCtx, appCtx.Tenant.ShortName)
+	dataUsageInfo, err := cluster.GetBucketUsageMetrics(appCtx, appCtx.Tenant().ShortName)
 	if err != nil {
 		log.Println("error getting bucket usage metrics:", err)
 	}
